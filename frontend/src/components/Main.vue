@@ -8,7 +8,7 @@
 
     <table>
       <tr v-for="restaurant in restaurants" :key="restaurant.id">
-        <td>{{restaurant.name}}</td>
+        <td>{{ restaurant.name }}</td>
         <td>
           <button>Delete</button>
         </td>
@@ -18,29 +18,33 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Main",
   data() {
     return {
-      restaurants: [
-        {
-          id: 1,
-          name: "Burger King"
-        },
-        {
-          id: 2,
-          name: "KFC"
-        },
-        {
-          id: 3,
-          name: "McDonalds"
-        }
-      ]
+      restaurants: [],
+      errors: []
     };
+  },
+  mounted() {
+    this.getAll();
+  },
+  methods: {
+    getAll() {
+      axios
+        .get("http://localhost:3000/restaurants")
+        .then(response => {
+          this.restaurants = response.data;
+        })
+        .catch(error => {
+          this.errors.push(error);
+        });
+    }
   }
 };
 </script>
-
 
 <style scoped>
 .wrapper {
