@@ -4,7 +4,8 @@
 
     <h2>Chosen Restaurant</h2>
 
-    <button>Add New</button>
+    <input type="text" v-model="newRestaurant" />
+    <button @click="addRestaurant">Add New</button>
 
     <table>
       <tr v-for="restaurant in restaurants" :key="restaurant.id">
@@ -25,19 +26,31 @@ export default {
   data() {
     return {
       restaurants: [],
-      errors: []
+      errors: [],
+      newRestaurant: ""
     };
   },
   mounted() {
-    this.getAll();
+    this.getAllRestaurants();
   },
   methods: {
-    getAll() {
+    getAllRestaurants() {
       axios
         .get("http://localhost:3000/restaurants")
         .then(response => {
           this.restaurants = response.data;
         })
+        .catch(error => {
+          this.errors.push(error);
+        });
+    },
+    addRestaurant() {
+      let restaurant = {
+        name: this.newRestaurant
+      };
+      this.restaurants.push(restaurant);
+      axios
+        .post("http://localhost:3000/restaurants/new", restaurant)
         .catch(error => {
           this.errors.push(error);
         });

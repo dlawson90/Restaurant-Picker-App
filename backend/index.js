@@ -35,6 +35,20 @@ app.get("/restaurants", (req, res) => {
   });
 });
 
+app.post("/restaurants/new", (req, res) => {
+  let data = {
+    name: req.body.name
+  };
+
+  let restaurant = new Restaurant(data);
+
+  restaurant.save(error => {
+    if (error) {
+      console.log(error);
+    }
+  });
+});
+
 app.listen(port, function() {
   console.log("Server Listening: " + port);
 });
