@@ -8,10 +8,10 @@
     <button @click="addRestaurant">Add New</button>
 
     <table>
-      <tr v-for="restaurant in restaurants" :key="restaurant.id">
+      <tr v-for="restaurant in restaurants" :key="restaurant._id">
         <td>{{ restaurant.name }}</td>
         <td>
-          <button>Delete</button>
+          <button @click.prevent="deleteRestaurant(restaurant)">Delete</button>
         </td>
       </tr>
     </table>
@@ -48,9 +48,22 @@ export default {
       let restaurant = {
         name: this.newRestaurant
       };
-      this.restaurants.push(restaurant);
+
       axios
         .post("http://localhost:3000/restaurants/new", restaurant)
+        .then(() => {
+          this.restaurants.push(restaurant);
+        })
+        .catch(error => {
+          this.errors.push(error);
+        });
+    },
+    deleteRestaurant(restaurant) {
+      axios
+        .delete("http://localhost:3000/restaurants/" + restaurant._id)
+        .then(() => {
+          this.restaurants.splice(this.restaurants.indexOf(restaurant), 1);
+        })
         .catch(error => {
           this.errors.push(error);
         });

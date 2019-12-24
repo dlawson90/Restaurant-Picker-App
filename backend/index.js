@@ -45,10 +45,22 @@ app.post("/restaurants/new", (req, res) => {
   restaurant.save(error => {
     if (error) {
       console.log(error);
+    } else {
+      res.json('Restaurant added!');
     }
   });
 });
 
-app.listen(port, function() {
+app.delete('/restaurants/:id', (req, res) => {
+  Restaurant.findByIdAndDelete(req.params.id, (error) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.json('Restaurant deleted!');
+    }
+  });
+});
+
+app.listen(port, function () {
   console.log("Server Listening: " + port);
 });
