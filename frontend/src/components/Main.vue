@@ -2,7 +2,10 @@
   <div class="wrapper">
     <h1>Food App</h1>
 
-    <h2>Chosen Restaurant</h2>
+    <h2>{{chosenRestaurant.name}}</h2>
+    <button class="button" @click="chooseRestaurant">Choose Restaurant</button>
+
+    <br />
 
     <input type="text" v-model="newRestaurant" />
     <button @click="addRestaurant">Add New</button>
@@ -27,7 +30,8 @@ export default {
     return {
       restaurants: [],
       errors: [],
-      newRestaurant: ""
+      newRestaurant: "",
+      chosenRestaurant: ""
     };
   },
   mounted() {
@@ -67,6 +71,11 @@ export default {
         .catch(error => {
           this.errors.push(error);
         });
+    },
+    chooseRestaurant() {
+      this.chosenRestaurant = this.restaurants[
+        Math.floor(Math.random() * this.restaurants.length)
+      ];
     }
   }
 };
