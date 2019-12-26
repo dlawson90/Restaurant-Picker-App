@@ -28,17 +28,18 @@ div {
 body {
   min-height: 100%;
   width: 100%;
-  background: #00c6ff; /* fallback for old browsers */
+  background: #36d1dc; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
-    #0072ff,
-    #00c6ff
+    #5b86e5,
+    #36d1dc
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     to right,
-    #0072ff,
-    #00c6ff
+    #5b86e5,
+    #36d1dc
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   font-family: "Roboto", sans-serif;
 }
 </style>
