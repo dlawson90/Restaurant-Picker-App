@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+
+const env = process.env.NODE_ENV || 'development';
+const config = require('./config')[env];
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -10,8 +12,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 mongoose.connect(
-  "mongodb://dan:qwerty123@ds129625.mlab.com:29625/restaurant-picker",
-  { useNewUrlParser: true }
+  "mongodb://" + config.database.username + ":" + config.database.password + "@ds129625.mlab.com:29625/restaurant-picker",
+  { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
 var restaurantSchema = new mongoose.Schema({
@@ -61,6 +63,6 @@ app.delete('/restaurants/:id', (req, res) => {
   });
 });
 
-app.listen(port, function () {
-  console.log("Server Listening: " + port);
+app.listen(config.server.port, function () {
+  console.log("Server Listening: " + config.server.port);
 });
