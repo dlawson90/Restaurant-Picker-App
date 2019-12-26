@@ -83,6 +83,8 @@ export default {
 
       if (this.newRestaurant === "") {
         this.errors.push("Name required");
+      } else if (this.duplicateFound() === true) {
+        this.errors.push(this.newRestaurant + " is already in list!");
       } else {
         axios
           .post("http://localhost:3000/restaurants/new", restaurant)
@@ -113,6 +115,14 @@ export default {
     },
     clearErrors() {
       this.errors = [];
+    },
+    duplicateFound() {
+      for (var i = 0; i < this.restaurants.length; i++) {
+        if (this.restaurants[i].name === this.newRestaurant) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 };
