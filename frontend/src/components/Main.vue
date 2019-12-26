@@ -1,23 +1,49 @@
 <template>
   <div class="wrapper">
-    <h1>Food App</h1>
+    <h1>Regit Restaurant Picker</h1>
 
-    <h2>{{chosenRestaurant.name}}</h2>
-    <button class="button" @click="chooseRestaurant">Choose Restaurant</button>
+    <hr />
 
-    <br />
+    <div class="ui error message" v-if="errors.length > 0">
+      <i class="close icon" @click="clearErrors"></i>
+      <div class="header">Errors</div>
+      <ul class="list">
+        <li v-for="(error, index) in errors" :key="index">{{error}}</li>
+      </ul>
+    </div>
 
-    <input type="text" v-model="newRestaurant" />
-    <button @click="addRestaurant">Add New</button>
+    <div class="picker">
+      <h2 class="chosen">{{chosenRestaurant.name}}</h2>
+      <button class="ui purple button" @click="chooseRestaurant">Choose Restaurant</button>
+    </div>
 
-    <table>
-      <tr v-for="restaurant in restaurants" :key="restaurant._id">
-        <td>{{ restaurant.name }}</td>
-        <td>
-          <button @click.prevent="deleteRestaurant(restaurant)">Delete</button>
-        </td>
-      </tr>
-    </table>
+    <div class="add-form">
+      <div class="ui input">
+        <input class="add-input" type="text" v-model="newRestaurant" placeholder="restaurant name" />
+      </div>
+      <button @click="addRestaurant" class="ui green button add-button">Add</button>
+    </div>
+
+    <div class="restaurant-table">
+      <table class="ui celled table">
+        <thead>
+          <tr>
+            <th>Restaurant Name</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="restaurant in restaurants" :key="restaurant._id">
+            <td>{{ restaurant.name }}</td>
+            <td>
+              <button class="ui red button" @click.prevent="deleteRestaurant(restaurant)">
+                <i class="trash alternate outline icon"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -31,7 +57,9 @@ export default {
       restaurants: [],
       errors: [],
       newRestaurant: "",
-      chosenRestaurant: ""
+      chosenRestaurant: {
+        name: "---"
+      }
     };
   },
   mounted() {
@@ -53,14 +81,20 @@ export default {
         name: this.newRestaurant
       };
 
-      axios
-        .post("http://localhost:3000/restaurants/new", restaurant)
-        .then(() => {
-          this.restaurants.push(restaurant);
-        })
-        .catch(error => {
-          this.errors.push(error);
-        });
+      if (this.newRestaurant === "") {
+        this.errors.push("Name required");
+      } else {
+        axios
+          .post("http://localhost:3000/restaurants/new", restaurant)
+          .then(() => {
+            this.restaurants.push(restaurant);
+            this.newRestaurant = "";
+            this.getAllRestaurants();
+          })
+          .catch(error => {
+            this.errors.push(error);
+          });
+      }
     },
     deleteRestaurant(restaurant) {
       axios
@@ -76,6 +110,9 @@ export default {
       this.chosenRestaurant = this.restaurants[
         Math.floor(Math.random() * this.restaurants.length)
       ];
+    },
+    clearErrors() {
+      this.errors = [];
     }
   }
 };
@@ -83,22 +120,55 @@ export default {
 
 <style scoped>
 .wrapper {
-  width: 50%;
+  background-color: white;
+  width: 40%;
   margin: 0 auto;
+  margin-top: 50px;
+  padding: 50px;
+  border-radius: 20px;
 }
+
 h1 {
   text-align: center;
+  margin-bottom: 30px;
+  color: #333;
 }
-h2 {
+
+hr {
+  height: 1px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.picker {
   text-align: center;
 }
 
-table {
-  width: 100%;
+.picker .chosen {
+  margin: 30px;
+  font-size: 50px;
+  color: #0072ff;
+  font-weight: 700;
 }
 
-td {
-  border: 1px solid red;
-  padding: 10px;
+.add-form {
+  margin: 30px 0;
+  text-align: center;
+}
+
+.add-input {
+  height: 22px;
+}
+
+.add-button {
+  margin-left: 20px;
+}
+
+.restaurant-table {
+  margin-top: 30px;
+}
+
+.icon {
+  margin: 0 auto;
 }
 </style>
