@@ -35,8 +35,8 @@
         <tbody>
           <tr v-for="restaurant in restaurants" :key="restaurant._id">
             <td>{{ restaurant.name }}</td>
-            <td>
-              <button class="ui red button" @click.prevent="deleteRestaurant(restaurant)">
+            <td style="text-align:center;">
+              <button class="ui icon red button" @click.prevent="deleteRestaurant(restaurant)">
                 <i class="trash alternate outline icon"></i>
               </button>
             </td>
