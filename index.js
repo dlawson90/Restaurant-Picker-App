@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 mongoose.connect(
-  "mongodb://" + config.database.username + ":" + config.database.password + "@ds129625.mlab.com:29625/restaurant-picker",
+  config.database.url,
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
