@@ -118,7 +118,10 @@ export default {
     },
     duplicateFound() {
       for (var i = 0; i < this.restaurants.length; i++) {
-        if (this.restaurants[i].name === this.newRestaurant) {
+        if (
+          this.restaurants[i].name.toLowerCase() ===
+          this.newRestaurant.toLowerCase()
+        ) {
           return true;
         }
       }
