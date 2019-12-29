@@ -7,9 +7,11 @@ const config = require('./config')[env];
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const path = require('path');
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.connect(
   config.database.url,
@@ -22,10 +24,6 @@ var restaurantSchema = new mongoose.Schema({
 });
 
 var Restaurant = mongoose.model("Restaurant", restaurantSchema);
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
 app.get("/restaurants", (req, res) => {
   Restaurant.find({}, (error, restaurants) => {
@@ -61,6 +59,10 @@ app.delete('/restaurants/:id', (req, res) => {
       res.json('Restaurant deleted!');
     }
   });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.listen(config.server.port, function () {

@@ -68,7 +68,7 @@ export default {
   methods: {
     getAllRestaurants() {
       axios
-        .get("http://localhost:3000/restaurants")
+        .get("/restaurants")
         .then(response => {
           this.restaurants = response.data;
         })
@@ -87,7 +87,7 @@ export default {
         this.errors.push(this.newRestaurant + " is already in list!");
       } else {
         axios
-          .post("http://localhost:3000/restaurants/new", restaurant)
+          .post("/restaurants/new", restaurant)
           .then(() => {
             this.restaurants.push(restaurant);
             this.newRestaurant = "";
@@ -100,7 +100,7 @@ export default {
     },
     deleteRestaurant(restaurant) {
       axios
-        .delete("http://localhost:3000/restaurants/" + restaurant._id)
+        .delete("/restaurants/" + restaurant._id)
         .then(() => {
           this.restaurants.splice(this.restaurants.indexOf(restaurant), 1);
         })
