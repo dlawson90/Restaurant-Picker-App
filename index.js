@@ -65,6 +65,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-app.listen(config.server.port, function () {
-  console.log("Server Listening: " + config.server.port);
+const port = process.env.PORT || 3000;
+
+app.listen(port, function () {
+  console.log("Server Listening: " + port);
 });
