@@ -1,4 +1,7 @@
-# food-app
+# Regit Restaurant Picker
+
+## Live
+https://regit-restaurant-picker.herokuapp.com
 
 ## Project setup
 ```
